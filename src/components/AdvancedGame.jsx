@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { GameProvider, useGameContext } from "../context/GameContext";
 import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
@@ -28,6 +29,30 @@ function SingleBoard({ index, board, onMove }) {
   );
 }
 
+function QuitModal({ onConfirm, onCancel }) {
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-xl p-6 w-80 max-w-full shadow-lg text-center">
+        <h3 className="text-xl font-bold mb-4">Quit the game?</h3>
+        <div className="flex justify-around mt-6">
+          <button
+            onClick={onConfirm}
+            className="px-6 py-2 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition"
+          >
+            Yes
+          </button>
+          <button
+            onClick={onCancel}
+            className="px-6 py-2 rounded-lg bg-gray-300 text-gray-700 font-semibold hover:bg-gray-400 transition"
+          >
+            Keep playing
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function GameLogic() {
   const { player1, player2, vsBot } = useGameContext();
   const [boards, setBoards] = useState(
@@ -40,6 +65,8 @@ function GameLogic() {
   const [finishedBoards, setFinishedBoards] = useState(Array(3).fill(null));
   const [gameOver, setGameOver] = useState(false);
   const [isDraw, setIsDraw] = useState(false);
+  const [showQuitModal, setShowQuitModal] = useState(false);
+  const navigate = useNavigate();
 
   const checkWin = (cells) => {
     const lines = [
@@ -77,14 +104,12 @@ function GameLogic() {
       newFinishedBoards[boardIndex] = winner;
       setWins((prev) => ({ ...prev, [winner]: prev[winner] + 1 }));
     } else if (board.every((cell) => cell !== null)) {
-      // Mark board as draw to prevent further moves
       newFinishedBoards[boardIndex] = "D"; // D for Draw
     }
 
     setBoards(newBoards);
     setFinishedBoards(newFinishedBoards);
-    const newPlayer = currentPlayer === "X" ? "O" : "X";
-    setCurrentPlayer(newPlayer);
+    setCurrentPlayer(currentPlayer === "X" ? "O" : "X");
   };
 
   // Bot logic (Advanced)
@@ -106,7 +131,7 @@ function GameLogic() {
           availableMoves[Math.floor(Math.random() * availableMoves.length)];
         handleMove(randomMove.boardIndex, randomMove.cellIndex);
       }
-    }, 700); // slight delay for realism
+    }, 700);
 
     return () => clearTimeout(moveTimeout);
   }, [currentPlayer, vsBot, boards, finishedBoards, gameOver]);
@@ -129,8 +154,36 @@ function GameLogic() {
     }
   }, [wins, finishedBoards]);
 
+  const resetGame = () => {
+    setBoards(Array(3).fill(null).map(() => Array(9).fill(null)));
+    setCurrentPlayer("X");
+    setWins({ X: 0, O: 0 });
+    setFinishedBoards(Array(3).fill(null));
+    setGameOver(false);
+    setIsDraw(false);
+    setShowQuitModal(false);
+  };
+
+  const handleQuitClick = () => setShowQuitModal(true);
+  const handleConfirmQuit = () => {
+    setShowQuitModal(false);
+    navigate("/");  // redirect to front page
+  };
+  
+  const handleCancelQuit = () => setShowQuitModal(false);
+
   return (
-    <div className="flex flex-col items-center gap-4 p-4">
+    <div className="relative flex flex-col items-center gap-4 p-4 max-w-4xl w-full">
+      {/* Red X quit button top right */}
+      <button
+        onClick={handleQuitClick}
+        className="absolute top-4 right-4 w-10 h-10 rounded-full bg-red-600 text-white font-bold text-xl hover:bg-red-700 transition flex items-center justify-center shadow-lg"
+        aria-label="Quit the game"
+        title="Quit the game"
+      >
+        ×
+      </button>
+
       <h2 className="text-xl font-bold">Advanced Game</h2>
       <p>
         Player X: {player1} | Player O: {vsBot ? "Bot" : player2}
@@ -165,6 +218,24 @@ function GameLogic() {
         </p>
       )}
       {isDraw && <p className="text-gray-600 text-xl">🤝 It's a draw!</p>}
+
+      {/* Play Again button */}
+      {gameOver && (
+        <button
+          onClick={resetGame}
+          className="mt-4 px-6 py-3 bg-green-600 text-white font-semibold rounded-xl shadow-lg hover:bg-green-700 transition"
+        >
+          Play Again
+        </button>
+      )}
+
+      {/* Quit confirmation modal */}
+      {showQuitModal && (
+        <QuitModal
+          onConfirm={handleConfirmQuit}
+          onCancel={handleCancelQuit}
+        />
+      )}
     </div>
   );
 }
@@ -172,7 +243,7 @@ function GameLogic() {
 export default function AdvancedGame({ player1, player2, vsBot }) {
   return (
     <GameProvider player1={player1} player2={player2} vsBot={vsBot}>
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <GameLogic />
       </div>
     </GameProvider>
