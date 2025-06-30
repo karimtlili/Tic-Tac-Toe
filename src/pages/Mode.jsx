@@ -10,8 +10,8 @@ export default function Mode() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-4 bg-gray-200">
-      <h2 className="text-2xl font-semibold mb-4">Choose Game Mode</h2>
+    <div className="flex flex-col items-center justify-center min-h-screen gap-4 bg-gray-100">
+      <h2 className="text-2xl font-bold text-gray-800">Choose Game Mode</h2>
       <button onClick={() => goTo("classic")} className="bg-purple-500 text-white px-6 py-3 rounded-lg">
         Classic
       </button>

@@ -187,7 +187,7 @@ function GameLogic() {
 
       <h2 className="text-xl font-bold">Advanced Game</h2>
       <p>
-        Player X: {player1} | Player O: {vsBot ? "Bot" : player2}
+        {player1} (X) vs {vsBot ? "Bot" : player2} (O)
       </p>
       <p className="text-sm">Current Turn: {currentPlayer}</p>
 

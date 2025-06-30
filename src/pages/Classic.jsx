@@ -29,9 +29,9 @@ export default function Classic() {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 relative">
         <button
           onClick={handleBack}
-          className="absolute top-4 right-4 text-red-500 text-xl font-bold"
+          className="absolute top-4 right-4 text-4xl font-extrabold text-red-600 hover:text-red-800 transition cursor-pointer select-none z-50"
         >
-          ✕
+          ×
         </button>
         <h2 className="text-2xl font-bold mb-6 text-center">Classic Mode</h2>
         <div className="mb-6">
