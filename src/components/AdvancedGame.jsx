@@ -177,12 +177,13 @@ function GameLogic() {
       {/* Red X quit button top right */}
       <button
         onClick={handleQuitClick}
-        className="absolute top-4 right-4 w-10 h-10 rounded-full bg-red-600 text-white font-bold text-xl hover:bg-red-700 transition flex items-center justify-center shadow-lg"
+        className="fixed top-4 right-4 text-4xl font-extrabold text-red-600 hover:text-red-800 transition cursor-pointer select-none z-50"
         aria-label="Quit the game"
         title="Quit the game"
       >
         ×
       </button>
+
 
       <h2 className="text-xl font-bold">Advanced Game</h2>
       <p>

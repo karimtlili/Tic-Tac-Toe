@@ -18,7 +18,9 @@ export default function Mode() {
       <button onClick={() => goTo("advanced")} className="bg-yellow-500 text-white px-6 py-3 rounded-lg">
         Advanced
       </button>
-      <button onClick={() => navigate("/")} className="absolute top-4 right-4 text-red-600 text-xl">✕</button>
+      <button onClick={() => navigate("/")} className="fixed top-4 right-4 text-4xl font-extrabold text-red-600 hover:text-red-800 transition cursor-pointer select-none z-50">
+        ×
+      </button>
     </div>
   );
 }

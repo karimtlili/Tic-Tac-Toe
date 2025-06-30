@@ -55,17 +55,30 @@ export default function ClassicGame({ player1, player2, vsBot }) {
       <p className="text-md">Player X: {names.X} | Player O: {names.O}</p>
       <p className="text-sm text-gray-600">Current Turn: {currentPlayer}</p>
 
-      <div className="grid grid-cols-3 gap-2">
-        {board.map((cell, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleClick(idx)}
-            className="w-20 h-20 text-2xl font-bold border bg-white hover:bg-gray-100"
-          >
-            {cell}
-          </button>
-        ))}
-      </div>
+      <div className="p-4 rounded-2xl shadow-lg bg-white border-4 border-gray-200">
+        <div className="grid grid-cols-3 gap-1">
+          {board.map((cell, idx) => (
+            <button
+              key={idx}
+              onClick={() => handleClick(idx)}
+              className="w-20 h-20 text-3xl font-bold rounded-xl bg-gray-50 hover:bg-gray-200 transition-colors duration-200 border-2 border-gray-300"
+            >
+        <span
+          className={
+            cell === "X"
+              ? "text-red-500"
+              : cell === "O"
+              ? "text-blue-500"
+              : ""
+          }
+        >
+          {cell}
+        </span>
+      </button>
+    ))}
+  </div>
+</div>
+
 
       {winner && (
         <div className="mt-4 text-lg font-semibold text-green-600">
