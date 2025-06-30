@@ -1,28 +1,17 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState } from "react";
 
 const GameContext = createContext();
 
-export function GameProvider({ children }) {
-  const [vsBot, setVsBot] = useState(false);
-  const [player1, setPlayer1] = useState('');
-  const [player2, setPlayer2] = useState('');
+export function GameProvider({ children, player1, player2, vsBot }) {
+  const [scores, setScores] = useState({ [player1]: 0, [player2]: 0 });
 
   return (
-    <GameContext.Provider
-      value={{
-        vsBot,
-        setVsBot,
-        player1,
-        setPlayer1,
-        player2,
-        setPlayer2,
-      }}
-    >
+    <GameContext.Provider value={{ player1, player2, vsBot, scores, setScores }}>
       {children}
     </GameContext.Provider>
   );
 }
 
-export function useGame() {
+export function useGameContext() {
   return useContext(GameContext);
 }
